@@ -347,7 +347,7 @@ if (predefinedLineitems) {
             quantity: items[i].quantity,
             unitPrice: items[i].price,
             unitPriceLessTax: Math.round(makeNumber(items[i].price / tr) * 100) / 100,
-            SKU: items[i].sku || items[i].id || items[i].item_id,
+            SKU: items[i].sku || items[i].id || items[i].item_id || items[i].SKU || items[i].ID,
             productName: items[i].name || items[i].item_name,
             optionalData: {
                 cat: items[i].category || items[i].item_category,
