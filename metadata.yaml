@@ -4,7 +4,8 @@ documentation: "https://go.rakutenadvertising.com/hubfs/rakuten-advertising-perf
 versions:
   # Latest version
   - sha: ba48436bbf5c395b3b179937809beb67c9d9310d
-  changeNotes: Minor update
-    added additional product id options to the default line item code      
+  changeNotes: Minor update.
+    Added additional product id options to the default line item code.
+  # Older versions  
   - sha: 4cef3be2e35dc59f16a5ea7ea65a093fe0d02083
     changeNotes: Initial release.
