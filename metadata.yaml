@@ -3,7 +3,7 @@ homepage: "https://rakutenadvertising.com/"
 documentation: "https://go.rakutenadvertising.com/hubfs/rakuten-advertising-performance-tag-gtm-template-integration-guide.pdf"
 versions:
   # Latest version
-  - sha: ba48436bbf5c395b3b179937809beb67c9d9310d
+  - sha: 2acc358a071357715e18a8de1d95d12e20115266
   changeNotes: Minor update.
     Added additional product id options to the default line item code.
   # Older versions  
