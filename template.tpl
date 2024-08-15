@@ -358,7 +358,7 @@ Creates a new item-level optData object and manually copies each property from i
 */
 for (let i = 0; i < items.length; i++) {
     let optData = {};
-    if(items[i].optionalData && typeof items[i].optionalData === 'object'){
+    if(typeof items[i].optionalData === 'object'){
 	    for (var prop in items[i].optionalData) {
 	        if (items[i].optionalData.hasOwnProperty(prop)) {
 	            optData[prop] = items[i].optionalData[prop];
