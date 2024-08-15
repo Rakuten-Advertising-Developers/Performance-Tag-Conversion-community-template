@@ -358,13 +358,18 @@ Creates a new item-level optData object and manually copies each property from i
 */
 for (let i = 0; i < items.length; i++) {
     let optData = {};
-    for (var prop in items[i].optionalData) {
-        if (items[i].optionalData.hasOwnProperty(prop)) {
-            optData[prop] = items[i].optionalData[prop];
-        }
+    if(typeof items[i].optionalData === 'object'){
+	    for (var prop in items[i].optionalData) {
+	        if (items[i].optionalData.hasOwnProperty(prop)) {
+	            optData[prop] = items[i].optionalData[prop];
+	        }
+	    }
     }
-    optData.cat = items[i].category || items[i].item_category || items[i].optionalData.cat;
-    optData.brand = items[i].brand || items[i].item_brand || items[i].optionalData.brand;
+    else {
+      items[i].optionalData = {};
+    }
+    optData.cat = items[i].category || items[i].item_category || items[i].optionalData.cat || "";
+    optData.brand = items[i].brand || items[i].item_brand || items[i].optionalData.brand || "";
 
     lineitems.push({
         quantity: items[i].quantity,
