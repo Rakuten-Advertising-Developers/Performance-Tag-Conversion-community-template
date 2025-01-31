@@ -283,18 +283,38 @@ const makeTableMap = require('makeTableMap');
 const callInWindow = require('callInWindow');
 const injectScript = require('injectScript');
 
-log('data =', data);
+log('Rakuten Advertising: Conversion Tag');
+log('Rakuten Advertising: Conversion Data', data);
+
+//checks whether JSON objects are empty
+function isObjectEmpty(obj) {
+    let isEmpty = true;
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            isEmpty = false;
+            break;
+        }
+    }
+    return isEmpty;
+}
 
 // Process User submittted variables into standard Rakuten Data Layer
 
 // Affiliate config setup
-let affiliateConfig = JSON.parse(data.affiliateConfig || "{}");
+let affiliateConfig = JSON.parse(data.affiliateConfig || "{}") || data.affiliateConfig || {};
+if (isObjectEmpty(affiliateConfig) === false){
 log('Rakuten Advertising: Affiliate Config', affiliateConfig);
+}
 // Display config setup
-let displayConfig = JSON.parse(data.displayConfig || "{}");
-
+let displayConfig = JSON.parse(data.displayConfig || "{}") || data.displayConfig || {};
+if (isObjectEmpty(displayConfig) === false){
+log('Rakuten Advertising: Display Config', displayConfig);
+}
 // Search config setup
-let searchConfig = JSON.parse(data.searchConfig || "{}");
+let searchConfig = JSON.parse(data.searchConfig || "{}") || data.searchConfig || {};
+if (isObjectEmpty(searchConfig) === false){
+log('Rakuten Advertising: Search Config', searchConfig);
+}
 
 // define standard DL variables
 let orderId = data.orderId;
@@ -312,74 +332,69 @@ let taxRate = data.taxRate;
 let dln = data.customDataLayerName || null;
 
 if (dln && dln != "DataLayer") {
-  setInWindow("rakutenDataLayerName", dln);
+    setInWindow("rakutenDataLayerName", dln);
 }
 
 // define standard order level optional data fields;
 let tableData = data.optionalDataTable || null;
 let optionalData = null;
-if(tableData) {
-  optionalData = makeTableMap(tableData, 'optionalDataKey', 'optionalDataValue'); 
+if (tableData) {
+    optionalData = makeTableMap(tableData, 'optionalDataKey', 'optionalDataValue');
 }
 
 let lineitems = [];
 
 // pre-defined lineitems hard coded values for lead gen and registrations etc.
 let predefinedLineitems = JSON.parse(data.predefinedLineitems || "false");
-if(predefinedLineitems){
-log('Rakuten Advertising: Predefined lineitems', predefinedLineitems);
-} 
+if (predefinedLineitems) {
+    log('Rakuten Advertising: Predefined lineitems', predefinedLineitems);
+}
 //custom line items is used to accomodate non standard ecommerce setups using a custom JS variable
 let customLineitems = data.customLineitems;
-if(customLineitems){
-log('Rakuten Advertising: Custom lineitems', customLineitems);
+if (customLineitems) {
+    log('Rakuten Advertising: Custom lineitems', customLineitems);
 }
 let tr = data.taxRate || affiliateConfig.taxRate || displayConfig.taxRate || 0;
 tr = (makeNumber(tr) + 100) / 100;
 
 if (predefinedLineitems) {
     lineitems = predefinedLineitems;
-} 
-
-else if (customLineitems) {
+} else if (customLineitems) {
     lineitems = customLineitems;
-}
-
- else if (data.lineitems) {
+} else if (data.lineitems) {
     // define line items object
     let items = data.lineitems;
-  
-if (items[0].unitPrice || items[0].unitPriceLessTax){
-log('Rakuten Advertising: Custom lineitems added to Transaction products field', items);
-}
 
-/*
-Creates a new item-level optData object and manually copies each property from items[i].optionalData using a for...in loop. Then, cat and brand properties are defined or overwritten in the optData object. Finally, optData is added to the lineitems array.
-*/
-for (let i = 0; i < items.length; i++) {
-    let optData = {};
-    if(typeof items[i].optionalData === 'object'){
-	    for (var prop in items[i].optionalData) {
-	        if (items[i].optionalData.hasOwnProperty(prop)) {
-	            optData[prop] = items[i].optionalData[prop];
-	        }
-	    }
+    if (items[0].unitPrice || items[0].unitPriceLessTax) {
+        log('Rakuten Advertising: Custom lineitems added to Transaction products field', items);
     }
-    else {
-      items[i].optionalData = {};
-    }
-    optData.cat = items[i].category || items[i].item_category || items[i].optionalData.cat || "";
-    optData.brand = items[i].brand || items[i].item_brand || items[i].optionalData.brand || "";
 
-    lineitems.push({
-        quantity: items[i].quantity,
-        unitPrice: items[i].price || items[i].unitPrice,
-        unitPriceLessTax: Math.round(makeNumber(items[i].price / tr) * 100) / 100 || items[i].unitPriceLessTax,
-        SKU: items[i].sku || items[i].id || items[i].item_id || items[i].SKU || items[i].ID,          
-        productName: items[i].name || items[i].item_name || items[i].productName,
-        optionalData: optData
-    });
-}
+    /*
+    Creates a new item-level optData object and manually copies each property from items[i].optionalData using a for...in loop. Then, cat and brand properties are defined or overwritten in the optData object. Finally, optData is added to the lineitems array.
+    */
+    for (let i = 0; i < items.length; i++) {
+        let optData = {};
+        if (typeof items[i].optionalData === 'object') {
+            for (var prop in items[i].optionalData) {
+                if (items[i].optionalData.hasOwnProperty(prop)) {
+                    optData[prop] = items[i].optionalData[prop];
+                }
+            }
+        } else {
+            items[i].optionalData = {};
+        }
+        optData.cat = items[i].category || items[i].item_category || items[i].optionalData.cat || "";
+        optData.brand = items[i].brand || items[i].item_brand || items[i].optionalData.brand || "";
+
+        lineitems.push({
+            quantity: items[i].quantity,
+            unitPrice: items[i].price || items[i].unitPrice,
+            unitPriceLessTax: Math.round(makeNumber(items[i].price / tr) * 100) / 100 || items[i].unitPriceLessTax,
+            SKU: items[i].sku || items[i].id || items[i].item_id || items[i].SKU || items[i].ID,
+            productName: items[i].name || items[i].item_name || items[i].productName,
+            optionalData: optData
+        });
+    }
 }
 
 log('Rakuten Advertising: Lineitems', lineitems);
@@ -421,11 +436,11 @@ if (discountAmount) {
 if (discountAmountLessTax) {
     rm_trans.discountAmountLessTax = discountAmountLessTax;
 }
-if(!discountAmountLessTax && discountAmount) {
-    rm_trans.discountAmountLessTax = Math.round(makeNumber(discountAmount / tr) * 100) / 100;  
-}  
-if(!discountAmount && discountAmountLessTax) {
-    rm_trans.discountAmount = Math.round(makeNumber(discountAmountLessTax * tr) * 100) / 100;  
+if (!discountAmountLessTax && discountAmount && affiliateConfig.taxRate && affiliateConfig.removeTaxFromDiscount === "true" || affiliateConfig.removeTaxFromDiscount === true) {
+    rm_trans.discountAmountLessTax = Math.round(makeNumber(discountAmount / tr) * 100) / 100;
+}
+if (!discountAmount && discountAmountLessTax) {
+    rm_trans.discountAmount = Math.round(makeNumber(discountAmountLessTax * tr) * 100) / 100;
 }
 if (taxAmount) {
     rm_trans.taxAmount = taxAmount;
@@ -434,7 +449,7 @@ if (taxRate) {
     rm_trans.taxRate = taxRate;
 }
 
-if(tableData !== null){
+if (tableData !== null) {
     rm_trans.optionalData = optionalData;
 }
 
@@ -443,20 +458,20 @@ log('RakutenAdvertising: Complete rm_trans object', rm_trans);
 // edited the conversion module to create a function rather than immediately call itself.
 
 function onSuccess() {
-	log('RakutenAdvertising: Conversion Success', rm_trans);
-	callInWindow('__rm_trans', rm_trans);
-	data.gtmOnSuccess();
+    log('RakutenAdvertising: Conversion Success', rm_trans);
+    callInWindow('__rm_trans', rm_trans);
+    data.gtmOnSuccess();
 }
 
 function onFailure() {
-	data.gtmOnFailure();
+    data.gtmOnFailure();
 }
 
 // pull in conversion script, and trigger on load with newly defined data layer
 const url = 'https://tag.rmp.rakuten.com/perf_tag_conv_3.4.1.js';
 log('Rakuten Advertising: Conversion Script', url);
 
-injectScript(url, onSuccess, onFailure, url);
+injectScript(url, onSuccess, onFailure);
 
 
 ___WEB_PERMISSIONS___
