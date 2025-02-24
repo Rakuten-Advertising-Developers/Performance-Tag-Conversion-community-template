@@ -436,7 +436,7 @@ if (discountAmount) {
 if (discountAmountLessTax) {
     rm_trans.discountAmountLessTax = discountAmountLessTax;
 }
-if (!discountAmountLessTax && discountAmount && affiliateConfig.taxRate && affiliateConfig.removeTaxFromDiscount === "true" || affiliateConfig.removeTaxFromDiscount === true) {
+if (!discountAmountLessTax && discountAmount && affiliateConfig.taxRate && (affiliateConfig.removeTaxFromDiscount === "true" || affiliateConfig.removeTaxFromDiscount === true)) {
     rm_trans.discountAmountLessTax = Math.round(makeNumber(discountAmount / tr) * 100) / 100;
 }
 if (!discountAmount && discountAmountLessTax) {
