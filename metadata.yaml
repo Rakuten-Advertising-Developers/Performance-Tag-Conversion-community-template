@@ -2,9 +2,11 @@ homepage: "https://rakutenadvertising.com/"
 documentation: "https://go.rakutenadvertising.com/hubfs/rakuten-advertising-performance-tag-gtm-template-integration-guide.pdf"
 versions:
   # Latest version
+  - sha: 31d69b810c804123293d4378418cb235f948ca56
+    changeNotes: "Updated the net discount logic, added some new debug logs and tidied the code a little."
+ # Older versions
   - sha: b1cb241cbf403d0c9a0393603ab2de4137123956
-    changeNotes: "Updated line item logic to check optionalData data type and include blank string default values for brand and category if not declared in optionalData"
-  # Older versions
+    changeNotes: "Updated line item logic to check optionalData data type and include blank string default values for brand and category if not declared in optionalData." 
   - sha: 360c1624752b822f6494efc1b4e4e432735b062b
     changeNotes: "Updated line item logic and console debugging. Added new logo."
   - sha: d0940526f51ec1f9fcdb4539fa6857c48bc46c60
