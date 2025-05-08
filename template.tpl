@@ -72,6 +72,16 @@ ___TEMPLATE_PARAMETERS___
         "alwaysInSummary": true,
         "help": "If instructed, please add your custom data layer name here.",
         "canBeEmptyString": false
+      },
+      {
+        "type": "TEXT",
+        "name": "customCookieName",
+        "displayName": "Custom cookie name",
+        "simpleValueType": true,
+        "alwaysInSummary": true,
+        "help": "If instructed, please add your custom cookie name here. It should match the following format rmStore[MID] where the [MID] placeholder is replaced with your actual MID eg. rmStore12345. You might want to consider using a lookup table variable for multiple MID setups.",
+        "canBeEmptyString": false,
+        "valueValidators": []
       }
     ]
   },
@@ -467,8 +477,17 @@ function onFailure() {
     data.gtmOnFailure();
 }
 
-// pull in conversion script, and trigger on load with newly defined data layer
-const url = 'https://tag.rmp.rakuten.com/perf_tag_conv_3.4.1.js';
+// inject conversion script, and trigger on load with newly defined data layer
+
+var url = 'https://tag.rmp.rakuten.com/perf_tag_conv_3.4.1_gtm_min.js';
+
+let customCookieName = data.customCookieName ? data.customCookieName : null;
+
+if (customCookieName){
+url = url + '?cookieName=' + customCookieName;
+log('Rakuten Advertising: Custom cookie name -', customCookieName);
+}
+
 log('Rakuten Advertising: Conversion Script', url);
 
 injectScript(url, onSuccess, onFailure);
@@ -612,7 +631,11 @@ ___WEB_PERMISSIONS___
             "listItem": [
               {
                 "type": 1,
-                "string": "https://tag.rmp.rakuten.com/perf_tag_conv_3.4.1.js"
+                "string": "https://tag.rmp.rakuten.com/*"
+              },
+              {
+                "type": 1,
+                "string": "https://ut-devqa.linksynergy.com/*"
               }
             ]
           }
