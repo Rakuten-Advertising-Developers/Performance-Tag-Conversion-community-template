@@ -13,7 +13,7 @@ ___INFO___
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
-  "displayName": "Rakuten Advertising Performance Tag - Conversion",
+  "displayName": "Rakuten Advertising Performance Tag - Conversion - Custom Cookie name Final Version",
   "categories": [
     "ADVERTISING",
     "ANALYTICS",
@@ -632,10 +632,6 @@ ___WEB_PERMISSIONS___
               {
                 "type": 1,
                 "string": "https://tag.rmp.rakuten.com/*"
-              },
-              {
-                "type": 1,
-                "string": "https://ut-devqa.linksynergy.com/*"
               }
             ]
           }
