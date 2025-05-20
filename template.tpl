@@ -353,6 +353,7 @@ if (data.type === "global") {
 
     // Declare and parse affiliate config
     let affiliateConfig = JSON.parse(data.affiliateConfig || "{}") || data.affiliateConfig || {};
+    
 
     if (isObjectEmpty(affiliateConfig) === true) {
         log("Rakuten Advertising: affiliate config", affiliateConfig);
@@ -373,13 +374,13 @@ if (data.type === "global") {
     if (orderId) {
         log("Rakuten Advertising: Transaction ID", orderId);
     } else {
-        log("Rakuten Advertising: Transaction ID not found in data layer, please add it manually via the settings for custom variables section");
+        log("Rakuten Advertising: Transaction ID not found, please add it manually via the settings for custom variables section");
     }
     let currency = data.currency || cFd('ecommerce').currency || cFd('ecommerce').purchase.actionfield.currencyCode || cFd('transactionCurrency') || null;
     if (currency) {
         log("Rakuten Advertising: Currency", currency);
     } else {
-        log("Rakuten Advertising: Currency not found in data layer, please add it manually via the settings for custom variables section");
+        log("Rakuten Advertising: Currency not found, please add it manually via the settings for custom variables section");
     }
     let customerStatus = data.customerStatus || null;
     let customerId = data.customerId || null;
@@ -1034,5 +1035,3 @@ setup: |-
 ___NOTES___
 
 Created on 9/16/2021, 10:50:04 AM
-
-
