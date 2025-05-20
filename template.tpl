@@ -394,7 +394,7 @@ if (data.type === "global") {
     if (discountCode) {
         log("Rakuten Advertising: Discount code", discountCode);
     } else {
-        log("Rakuten Advertising: Discount code not found in data layer, please add it manually via the settings for custom variables section if required");
+        log("Rakuten Advertising: Discount code not found, please add it manually via the settings for custom variables section if required");
     }
 
     let discountAmount = data.discountAmount || 0;
@@ -415,7 +415,7 @@ if (data.type === "global") {
 
 
     //Define item-level data
-    let items = data.items || cFd('ecommerce').items || cFd('ecommerce').purchase.products || cFd('transactionProducts') || [];
+    let items = data.items || cFd('ecommerce').items || cFd('ecommerce').purchase.products || cFd('transactionProducts') || null;
 
     let lineitems = [];
 
@@ -505,7 +505,7 @@ if (data.type === "global") {
         }
 
     } else {
-        log('Rakuten Advertising: Transaction items not found.');
+        log('Rakuten Advertising: Transaction items not found, please add it manually via the settings for custom variables section.');
     }
 
     log('Rakuten Advertising: Lineitems', lineitems);
@@ -1034,3 +1034,5 @@ setup: |-
 ___NOTES___
 
 Created on 9/16/2021, 10:50:04 AM
+
+
