@@ -49,7 +49,7 @@ ___TEMPLATE_PARAMETERS___
       },
       {
         "value": "vtexConversion",
-        "displayValue": "VTEX Conversion"
+        "displayValue": "Conversion (for VTEX Commerce Platform)"
       }
     ],
     "simpleValueType": true,
@@ -181,14 +181,6 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "Customer id",
         "simpleValueType": true,
         "help": "If instructed, please assign the customer ID for each order.",
-        "canBeEmptyString": false
-      },
-      {
-        "type": "TEXT",
-        "name": "taxRate",
-        "displayName": "Tax rate",
-        "simpleValueType": true,
-        "help": "If instructed, please assign the tax rate for each order.",
         "canBeEmptyString": false
       },
       {
